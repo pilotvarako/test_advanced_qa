@@ -161,7 +161,7 @@ public class LiteCartProductPageTest {
     }
 
     public boolean areElementsEqualToEachOther(int[] array) {
-        for (int each = 0, other = 0; other < array.length; other++) {
+        for (int each = 0, other = 1; other < array.length; other++) {
             if (array[each] != array[other]) {
                 return false;
             }
