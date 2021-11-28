@@ -2,13 +2,14 @@ package org.raiffaisendgtl.test;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class TestBase {
 
-    private ChromeDriver driver;
+    private WebDriver driver;
 
-    public ChromeDriver getDriver() {
+    public WebDriver getDriver() {
         return driver;
     }
 

@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.time.Duration;
 import java.util.List;
@@ -15,7 +14,7 @@ public class LiteCartFindSectionsTest extends TestBase {
 
     @Test
     public void findAllSections() {
-        ChromeDriver chromeDriver = getDriver();
+        WebDriver chromeDriver = getDriver();
         chromeDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
 
         chromeDriver.navigate().to("http://localhost/litecart/admin/");
