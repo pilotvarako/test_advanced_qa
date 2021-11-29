@@ -1,9 +1,7 @@
 package org.raiffaisendgtl.test;
 
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
 
 import java.time.Duration;
@@ -99,7 +97,15 @@ public class LiteCartUserRegistrationTest extends TestBase {
                                    String[] nameInfoFields) {
         for (String nameInfoField : nameInfoFields) {
             Select fieldSelect = new Select(mapFields.get(nameInfoField));
-            fieldSelect.selectByVisibleText(infoUser.get(nameInfoField));
+            try {
+                fieldSelect.selectByVisibleText(infoUser.get(nameInfoField));
+            } catch (ElementNotInteractableException ex) {
+                WebDriver driver = getDriver();
+                WebElement combobox = driver.findElement(By.cssSelector(".selection > [role=combobox]"));
+                combobox.click();
+                WebElement textbox = driver.findElement(By.cssSelector("input[role=textbox]"));
+                textbox.sendKeys(infoUser.get(nameInfoField) + Keys.ENTER);
+            }
         }
     }
 
