@@ -7,8 +7,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.File;
 import java.time.Duration;
+import java.util.List;
 
 public class LiteCartAddProduct extends TestBase {
 
@@ -30,25 +33,32 @@ public class LiteCartAddProduct extends TestBase {
         driver.navigate().to(urlPageCatalog);
 
         driver.findElement(By.cssSelector(".button:last-child")).click();
-        String nameProduct = "Black Sofa";
-        fillFieldsGeneralProduct(nameProduct);
+        String nameProduct = "Sofa Black";
+        String codeProduct = generateCodeProduct();
+        fillFieldsGeneralProduct(nameProduct, codeProduct);
 
         driver.findElement(By.xpath("//*[contains(@class, 'index')]//a[contains(text(),'Information')]")).click();
         fillFieldsInformationProduct();
 
-        driver.findElement(By.xpath("//*[contains(@class, 'index')]//a[contains(text(),'Data')]")).click();
-        fillFieldsDataProduct();
+        driver.findElement(By.xpath("//*[contains(@class, 'index')]//a[contains(text(),'Prices')]")).click();
+        fillFieldsPricesProduct();
 
         driver.findElement(By.cssSelector("[name='save']")).click();
-        driver.findElement(By.xpath("//a[contains(text(),'" + nameProduct + "')]"));
+
+        assertTrue(findAddedItem(urlPageCatalog, nameProduct, codeProduct));
     }
 
-    public void fillFieldsGeneralProduct(String nameProduct) {
+    public String generateCodeProduct() {
+        int code = (int) (Math.random() * 1000);
+        return "Sofa" + code;
+    }
+
+    public void fillFieldsGeneralProduct(String nameProduct, String codeProduct) {
         WebDriver driver = getDriver();
 
         driver.findElement(By.cssSelector("[name='status'][value='1']")).click();
         driver.findElement(By.cssSelector("[name='name[en]']")).sendKeys(nameProduct);
-        driver.findElement(By.cssSelector("[name='code']")).sendKeys("Sofa001");
+        driver.findElement(By.cssSelector("[name='code']")).sendKeys(codeProduct);
         driver.findElement(By.cssSelector("[name='quantity']")).clear();
         driver.findElement(By.cssSelector("[name='quantity']")).sendKeys("10");
 
@@ -69,30 +79,32 @@ public class LiteCartAddProduct extends TestBase {
         driver.findElement(By.cssSelector(".trumbowyg-editor")).sendKeys("test textarea");
     }
 
-    public void fillFieldsDataProduct() {
+    public void fillFieldsPricesProduct() {
         WebDriver driver = getDriver();
         WebElement number;
 
-        driver.findElement(By.cssSelector("[name='sku']")).sendKeys("TEST_SOFA");
-        driver.findElement(By.cssSelector("[name='weight']")).sendKeys("Sofa001");
-
-        number = driver.findElement(By.cssSelector("[name='weight']"));
+        number = driver.findElement(By.cssSelector("[name='purchase_price']"));
         number.clear();
-        number.sendKeys("50");
+        number.sendKeys("15");
 
-        number = driver.findElement(By.cssSelector("[name='dim_x']"));
+        number = driver.findElement(By.cssSelector("[name='prices[USD]']"));
         number.clear();
-        number.sendKeys("7");
+        number.sendKeys("25");
+    }
 
-        number = driver.findElement(By.cssSelector("[name='dim_y']"));
-        number.clear();
-        number.sendKeys("7");
-
-        number = driver.findElement(By.cssSelector("[name='dim_z']"));
-        number.clear();
-        number.sendKeys("7");
-
-        driver.findElement(By.cssSelector("[name='attributes[en]']")).sendKeys("test attributes");
+    public boolean findAddedItem(String urlPageCatalog, String nameProduct, String codeProduct) {
+        WebDriver driver = getDriver();
+        int countProducts = driver.findElements(By.xpath("//a[contains(text(),'" + nameProduct + "')]")).size();
+        for (int product = 0; product < countProducts; product++) {
+            List<WebElement> products = driver.findElements(By.xpath("//a[contains(text(),'" + nameProduct + "')]"));
+            products.get(product).click();
+            List<WebElement> element = driver.findElements(By.cssSelector("[name='code'][value='" + codeProduct + "']"));
+            if (element.size() == 1) {
+                return true;
+            }
+            driver.navigate().to(urlPageCatalog);
+        }
+        return false;
     }
 
 }
