@@ -1,4 +1,4 @@
-package org.raiffaisendgtl.test;
+package org.raiffaisendgtl.test.standard;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

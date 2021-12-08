@@ -1,4 +1,4 @@
-package org.raiffaisendgtl.test;
+package org.raiffaisendgtl.test.standard;
 
 import static org.junit.jupiter.api.Assertions.*;
 

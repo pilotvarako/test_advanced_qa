@@ -1,4 +1,4 @@
-package org.raiffaisendgtl.test;
+package org.raiffaisendgtl.test.standard;
 
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
